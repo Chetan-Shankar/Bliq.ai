@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bliq — Standards &amp; Certification Pyramid (L4, EU)</title>
+<style>
+ :root{--ink:#15263a;--muted:#5b6b7a;--line:#d3dce4}
+ *{box-sizing:border-box}
+ body{margin:0;background:#eef2f6;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+ .wrap{max-width:1080px;margin:0 auto;padding:26px 16px 64px}
+ h1{font-size:1.5rem;margin:0 0 6px}
+ .lead{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+ .legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 8px;font-size:.85rem}
+ .legend span{display:inline-flex;align-items:center;gap:7px}
+ .dot{width:14px;height:14px;border-radius:50%;display:inline-block}
+ .axis{text-align:center;color:var(--muted);font-size:.82rem;letter-spacing:.04em;margin:14px 0 6px;text-transform:uppercase}
+ .pyramid{display:flex;flex-direction:column;align-items:center;gap:12px;margin:8px 0 6px}
+ .tier{position:relative;width:100%;background:#fff;border:1px solid var(--line);border-top:5px solid var(--accent);
+        border-radius:12px;padding:14px 18px 16px 58px;box-shadow:0 3px 8px rgba(20,40,70,.06)}
+ .pnum{position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
+        background:var(--accent);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;
+        font-size:1.05rem;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+ .why{font-size:.9rem;color:#33485c;margin:0 0 10px}
+ .stds{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+ .std{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"code badge" "name name";gap:3px 10px;
+       text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fbfdff;
+       transition:.12s}
+ .std:hover{border-color:var(--accent);box-shadow:0 2px 6px rgba(20,40,70,.1)}
+ .code{grid-area:code;font-weight:800;font-size:.98rem;color:#15263a}
+ .sbadge{grid-area:badge;justify-self:end;align-self:center;color:#fff;font-size:.68rem;font-weight:700;
+          padding:2px 8px;border-radius:20px;white-space:nowrap}
+ .sname{grid-area:name;font-size:.82rem;color:var(--muted)}
+ .foot{color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:22px;padding-top:14px;line-height:1.55}
+ .order{background:#0f3d2a;color:#eafff2;border-radius:10px;padding:14px 18px;margin:18px 0 4px;font-size:.92rem;border-left:7px solid #2E9E5B}
+ .order b{color:#ffd23f}
+</style></head><body><div class="wrap">
+ <h1>Standards &amp; Certification — Legally Deployable L4 in Europe</h1>
+ <p class="lead">Read bottom-up: the legal foundation must be in place before the layers above it can be argued. <b>Vertical position = investment priority; badge colour = legal status.</b> Tap any standard for its official source.</p>
+ <div class="legend">
+   <span><i class="dot" style="background:#C0392B"></i> Mandatory</span>
+   <span><i class="dot" style="background:#E0901B"></i> Practically required</span>
+   <span><i class="dot" style="background:#5b7088"></i> Reference only</span>
+ </div>
+
+ <div class="axis">▲ invest later / informative</div>
+ <div class="pyramid">
+ <div class="tier" style="max-width:60%;--accent:#5b7088"><div class="pnum">5</div><div class="tbody"><div class="why">Reference frameworks — not the basis for urban L4, but they inform the approach.</div><div class="stds"><a class="std" href="https://efs.consulting/en/insights/article/information-security/unece-r157/" target="_blank" rel="noopener"><span class="code">UN R157 (ALKS)</span><span class="sbadge" style="background:#5b7088">Reference only</span><span class="sname">Highway L3 lane-keeping; shows how regulators reason about automated functions</span></a><a class="std" href="https://www.iso.org/standard/73767.html" target="_blank" rel="noopener"><span class="code">ISO 22737 (LSAD)</span><span class="sbadge" style="background:#5b7088">Reference only</span><span class="sname">Low-speed (≤32 km/h) automated driving; partial overlap with Bliq&#x27;s ODD</span></a></div></div></div>
+<div class="tier" style="max-width:74%;--accent:#C0392B"><div class="pnum">4</div><div class="tbody"><div class="why">Cyber + OTA — binding under EU type approval, and central to the weekly-release model.</div><div class="stds"><a class="std" href="https://unece.org/transport/documents/2021/03/standards/un-regulation-no-155-cyber-security-and-cyber-security" target="_blank" rel="noopener"><span class="code">UN R155</span><span class="sbadge" style="background:#C0392B">Mandatory</span><span class="sname">Cybersecurity Management System (CSMS) — mandatory</span></a><a class="std" href="https://www.iso.org/standard/70918.html" target="_blank" rel="noopener"><span class="code">ISO/SAE 21434</span><span class="sbadge" style="background:#E0901B">Practically required</span><span class="sname">Cybersecurity engineering (R155 references it)</span></a><a class="std" href="https://unece.org/transport/documents/2021/03/standards/un-regulation-no-156-software-update-and-software-update" target="_blank" rel="noopener"><span class="code">UN R156</span><span class="sbadge" style="background:#C0392B">Mandatory</span><span class="sname">Software Update Management System (SUMS) — mandatory</span></a><a class="std" href="https://www.iso.org/standard/77796.html" target="_blank" rel="noopener"><span class="code">ISO 24089</span><span class="sbadge" style="background:#E0901B">Practically required</span><span class="sname">Software update engineering (R156 references it)</span></a></div></div></div>
+<div class="tier" style="max-width:82%;--accent:#E0901B"><div class="pnum">3</div><div class="tbody"><div class="why">Where AI / ML failures live — “how do you know it won&#x27;t do something unsafe in a scenario it hasn&#x27;t seen?”</div><div class="stds"><a class="std" href="https://www.iso.org/standard/77490.html" target="_blank" rel="noopener"><span class="code">ISO 21448 (SOTIF)</span><span class="sbadge" style="background:#E0901B">Practically required</span><span class="sname">Safety of the intended functionality — the standard regulators reach for on AI behaviour</span></a></div></div></div>
+<div class="tier" style="max-width:90%;--accent:#E0901B"><div class="pnum">2</div><div class="tbody"><div class="why">The safety structure regulators and the Technical Service (TÜV) expect to see.</div><div class="stds"><a class="std" href="https://www.iso.org/standard/68383.html" target="_blank" rel="noopener"><span class="code">ISO 26262</span><span class="sbadge" style="background:#E0901B">Practically required</span><span class="sname">Functional safety — HARA + ASIL-decomposed safety concept</span></a></div></div></div>
+<div class="tier" style="max-width:100%;--accent:#1aa78f"><div class="pnum">1</div><div class="tbody"><div class="why">Legal prerequisite — the vehicle cannot operate as L4 in Germany without these.</div><div class="stds"><a class="std" href="https://eur-lex.europa.eu/eli/reg_impl/2022/1426/oj" target="_blank" rel="noopener"><span class="code">EU 2022/1426</span><span class="sbadge" style="background:#C0392B">Mandatory</span><span class="sname">Small-series L4 type approval (via KBA)</span></a><a class="std" href="https://www.gesetze-im-internet.de/afgbv/" target="_blank" rel="noopener"><span class="code">AFGBV</span><span class="sbadge" style="background:#C0392B">Mandatory</span><span class="sname">Operating-area approval + technical-supervisor concept (StVG §1e/§1f)</span></a></div></div></div>
+ </div>
+ <div class="axis">▼ invest first / legal prerequisite (foundation)</div>
+
+ <div class="order"><b>Priority of compliance investment:</b> ① EU 2022/1426 + AFGBV (legal prerequisite) → ② ISO 26262 (the structure regulators expect) → ③ ISO 21448 / SOTIF (where AI failures hide) → ④ UN R155 / R156 + ISO/SAE 21434 / ISO 24089 (cyber + OTA, increasingly scrutinised) → ⑤ everything else (UN R157, ISO 22737 as references).</div>
+
+ <p class="foot">Note on the two-axis design: some standards are <b>mandatory</b> yet ranked lower in <b>investment order</b> — e.g. UN R155/R156 are binding for type approval but are sequenced after the vehicle-approval and functional-safety foundation, because that foundation is what everything else attaches to. Original analysis; every linked standard points to its official ISO / UNECE / EUR-Lex / gesetze-im-internet source.</p>
+</div></body></html>
