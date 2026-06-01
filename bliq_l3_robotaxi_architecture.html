@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bliq AI — L3 Robotaxi Hybrid-C Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #ffffff;
+  --bg2:       #f5f6f8;
+  --bg3:       #eef0f3;
+  --border:    #dde0e8;
+  --border2:   #c4cad8;
+  --text:      #1a1e2a;
+  --text-dim:  #5a6070;
+  --text-faint:#9aa0b0;
+  --accent:    #1a5ec8;
+  --accent2:   #0e3a80;
+
+  /* Sensor — steel blue */
+  --c-sensor:  #ddeeff;
+  --c-sensor-b:#2a72c8;
+  --c-sensor-t:#0a3a78;
+
+  /* ML — indigo/violet */
+  --c-ml:      #ede8ff;
+  --c-ml-b:    #5a42d0;
+  --c-ml-t:    #2e1880;
+
+  /* Safety — emerald green */
+  --c-safety:  #d6f5e4;
+  --c-safety-b:#1a9050;
+  --c-safety-t:#0a4a28;
+
+  /* Planner — amber */
+  --c-plan:    #fff0cc;
+  --c-plan-b:  #c07010;
+  --c-plan-t:  #6a3a00;
+
+  /* Control — warm orange */
+  --c-ctrl:    #ffe8d0;
+  --c-ctrl-b:  #c05818;
+  --c-ctrl-t:  #6a2a00;
+
+  /* Aurix — purple */
+  --c-aurix:   #f0e0ff;
+  --c-aurix-b: #8830c0;
+  --c-aurix-t: #4a1070;
+
+  /* Remote ops — cyan/teal */
+  --c-remote:  #d0f4ff;
+  --c-remote-b:#0878a0;
+  --c-remote-t:#023a50;
+
+  /* Orin container — light blue tint */
+  --c-orin:    #eef5ff;
+  --c-orin-b:  #3a70d0;
+
+  --font: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 24px 20px 40px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-title strong {
+  display: block;
+  font-family: var(--font);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+  text-transform: none;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid;
+  text-transform: uppercase;
+}
+.badge-hybrid { background: #ddeeff; border-color: var(--accent); color: var(--accent2); }
+.badge-bliq   { background: #d0f5ec; border-color: #0a8060; color: #0a4030; }
+
+.badges { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.l-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-dim); }
+.l-swatch {
+  width: 18px; height: 10px; border-radius: 2px; border: 1px solid;
+  flex-shrink: 0;
+}
+
+/* Main diagram container */
+.diagram-outer {
+  overflow-x: auto;
+}
+
+.diagram {
+  min-width: 1100px;
+  display: grid;
+  gap: 12px;
+}
+
+/* Section label */
+.section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+}
+
+/* Row */
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+/* Generic block */
+.blk {
+  border: 1px solid;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.blk-name {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.blk-sub {
+  font-size: 9px;
+  line-height: 1.3;
+  opacity: 0.65;
+  font-family: var(--mono);
+}
+
+.blk-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-top: 3px;
+  align-self: flex-start;
+}
+
+/* Color variants */
+.blk-sensor { background: var(--c-sensor); border-color: var(--c-sensor-b); color: var(--c-sensor-t); }
+.blk-sensor .blk-tag { background: #b8daff; border: 1px solid var(--c-sensor-b); color: var(--c-sensor-t); }
+.blk-ml     { background: var(--c-ml);     border-color: var(--c-ml-b);     color: var(--c-ml-t);     }
+.blk-ml .blk-tag { background: #d4c8ff; border: 1px solid var(--c-ml-b); color: var(--c-ml-t); }
+.blk-safety { background: var(--c-safety); border-color: var(--c-safety-b); color: var(--c-safety-t); }
+.blk-safety .blk-tag { background: #a8ecc8; border: 1px solid var(--c-safety-b); color: var(--c-safety-t); }
+.blk-plan   { background: var(--c-plan);   border-color: var(--c-plan-b);   color: var(--c-plan-t);   }
+.blk-plan .blk-tag { background: #ffd880; border: 1px solid var(--c-plan-b); color: var(--c-plan-t); }
+.blk-ctrl   { background: var(--c-ctrl);   border-color: var(--c-ctrl-b);   color: var(--c-ctrl-t);   }
+.blk-ctrl .blk-tag { background: #ffc898; border: 1px solid var(--c-ctrl-b); color: var(--c-ctrl-t); }
+.blk-aurix  { background: var(--c-aurix);  border-color: var(--c-aurix-b);  color: var(--c-aurix-t);  }
+.blk-aurix .blk-tag { background: #d8a8ff; border: 1px solid var(--c-aurix-b); color: var(--c-aurix-t); }
+.blk-remote { background: var(--c-remote); border-color: var(--c-remote-b); color: var(--c-remote-t); }
+.blk-remote .blk-tag { background: #90d8f0; border: 1px solid var(--c-remote-b); color: var(--c-remote-t); }
+
+/* Container boxes */
+.container {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px 12px 12px;
+  position: relative;
+}
+
+.container-main {
+  background: var(--c-orin);
+  border-color: var(--c-orin-b);
+  border-width: 1.5px;
+}
+
+.container-aurix {
+  background: #f8eeff;
+  border-color: var(--c-aurix-b);
+  border-style: dashed;
+}
+
+.container-remote {
+  background: #eaf9ff;
+  border-color: var(--c-remote-b);
+  border-style: dashed;
+}
+
+.container-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ecu-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid;
+  letter-spacing: 0.06em;
+}
+
+.ecu-orin  { background: #cce0ff; border-color: #2a70d0; color: #0a3060; }
+.ecu-aurix { background: #e8c8ff; border-color: #8030c0; color: #40086a; }
+.ecu-remote{ background: #b8ecff; border-color: #0878a0; color: #023a50; }
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+  position: relative;
+}
+
+.divider-label {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 8px;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Arrow connectors — CSS-only */
+.arrow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 2px 0;
+}
+
+.arrow-down {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--text-faint);
+  font-size: 10px;
+  gap: 1px;
+}
+.arrow-down span { font-size: 9px; font-family: var(--mono); color: var(--text-faint); letter-spacing: 0.06em; }
+
+/* Flow arrows between rows */
+.flow-arrow {
+  text-align: center;
+  padding: 3px 0;
+  color: var(--text-faint);
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.flow-arrow.green { color: var(--c-safety-b); }
+.flow-arrow.purple { color: var(--c-aurix-b); }
+.flow-arrow.cyan { color: var(--c-remote-b); }
+
+/* Switch fabric bar */
+.switch-fabric {
+  background: #f0f4fa;
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 7px 14px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  position: relative;
+}
+
+.switch-fabric::before {
+  content: '';
+  position: absolute;
+  left: 8%; right: 8%; top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+}
+
+/* Vehicle bus */
+.vehicle-bus {
+  background: #fff0d8;
+  border: 1.5px solid var(--c-ctrl-b);
+  border-radius: 6px;
+  padding: 8px 14px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--c-ctrl-t);
+  text-transform: uppercase;
+}
+
+/* Grid helpers */
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+.flex-3 { flex: 3; }
+.w-full { width: 100%; }
+
+/* Footnote */
+.footnote {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-faint);
+  font-family: var(--mono);
+  line-height: 1.7;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+.footnote-item::before {
+  content: '▸ ';
+  color: var(--text-faint);
+}
+
+/* MRM indicator */
+.mrm-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #e8c8ff;
+  border: 1px solid var(--c-aurix-b);
+  color: var(--c-aurix-t);
+  margin-left: 6px;
+}
+
+.rops-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #90d8f0;
+  border: 1px solid var(--c-remote-b);
+  color: var(--c-remote-t);
+  margin-left: 6px;
+}
+
+/* Watchdog badge */
+.wd-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #e8c8ff;
+  border: 1px solid var(--c-aurix-b);
+  color: var(--c-aurix-t);
+}
+
+/* Horizontal pipe visual */
+.hpipe {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 9px;
+}
+.hpipe-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+
+/* Safety gate big block */
+.safety-gate-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--c-safety-b);
+  border-radius: 6px;
+  background: var(--c-safety);
+  padding: 8px 12px;
+  color: var(--c-safety-t);
+  text-align: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.safety-gate-wrap .blk-name { color: var(--c-safety-t); font-size: 12px; }
+.safety-gate-wrap .blk-sub { font-family: var(--mono); font-size: 9px; color: var(--c-safety-t); opacity: 0.7; }
+
+/* Remote ops section */
+.remote-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="page-title">
+    Architecture alignment · L3 v1.0
+    <strong>Bliq AI — Robotaxi Hybrid-C Stack</strong>
+    <div class="badges">
+      <span class="badge badge-hybrid">Approach C — Hybrid</span>
+      <span class="badge badge-bliq">★ Bliq Recommendation</span>
+    </div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);letter-spacing:0.08em">COMPUTE</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:2px">NVIDIA Orin (main) · Infineon Aurix TC4x (safety MCU)</div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-top:6px;letter-spacing:0.08em">STACK PHILOSOPHY</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:2px">ML perception front-end · RSS-gated classical planner · ASIL-D watchdog</div>
+  </div>
+</header>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="l-item"><div class="l-swatch blk-sensor" style="border-color:var(--c-sensor-b);background:var(--c-sensor)"></div>Sensors / Input</div>
+  <div class="l-item"><div class="l-swatch blk-ml" style="border-color:var(--c-ml-b);background:var(--c-ml)"></div>ML Perception ⚙</div>
+  <div class="l-item"><div class="l-swatch" style="border-color:var(--c-ml-b);background:var(--c-ml)"></div>ML Prediction ⚙</div>
+  <div class="l-item"><div class="l-swatch blk-plan" style="border-color:var(--c-plan-b);background:var(--c-plan)"></div>Planner (ML + safety gate)</div>
+  <div class="l-item"><div class="l-swatch blk-safety" style="border-color:var(--c-safety-b);background:var(--c-safety)"></div>Safety / RSS monitor</div>
+  <div class="l-item"><div class="l-swatch blk-ctrl" style="border-color:var(--c-ctrl-b);background:var(--c-ctrl)"></div>Vehicle control</div>
+  <div class="l-item"><div class="l-swatch blk-aurix" style="border-color:var(--c-aurix-b);background:var(--c-aurix)"></div>Aurix TC4x — ASIL-D safety MCU</div>
+  <div class="l-item"><div class="l-swatch blk-remote" style="border-color:var(--c-remote-b);background:var(--c-remote)"></div>Remote Ops (ROPS)</div>
+  <div class="l-item" style="gap:4px">
+    <div style="width:18px;height:10px;border-top:1px dashed var(--c-aurix-b);margin-top:5px"></div>MRM takeover path
+  </div>
+  <div class="l-item" style="gap:4px">
+    <div style="width:18px;height:10px;border-top:1px dashed var(--c-remote-b);margin-top:5px"></div>Remote assist / uplink
+  </div>
+</div>
+
+<div class="diagram-outer">
+<div class="diagram">
+
+  <!-- ══════════════════════════════════════════════
+       ROW 1 — SENSOR SUITE
+  ══════════════════════════════════════════════ -->
+  <div class="section-label">Sensor suite</div>
+  <div class="row">
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">Camera</div>
+      <div class="blk-sub">8× surround<br>+ fwd stereo pair</div>
+      <div class="blk-tag">ISP · CFA</div>
+    </div>
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">LiDAR</div>
+      <div class="blk-sub">1× 360° top unit<br>2× corner units</div>
+      <div class="blk-tag">PCAP · Ethernet</div>
+    </div>
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">Radar</div>
+      <div class="blk-sub">4× corner SRR<br>1× long-range fwd</div>
+      <div class="blk-tag">CAN · Automotive Eth</div>
+    </div>
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">GNSS / IMU</div>
+      <div class="blk-sub">Dual-antenna RTK<br>6-axis IMU</div>
+      <div class="blk-tag">NMEA · UART</div>
+    </div>
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">HD Map</div>
+      <div class="blk-sub">Lane-level tiles<br>ODD-bounded</div>
+      <div class="blk-tag">OpenDRIVE · NDS</div>
+    </div>
+    <div class="blk blk-sensor flex-1">
+      <div class="blk-name">V2X</div>
+      <div class="blk-sub">C-V2X RSU msgs<br>(optional infra)</div>
+      <div class="blk-tag">ETSI ITS-G5</div>
+    </div>
+  </div>
+
+  <!-- Switch fabric -->
+  <div class="flow-arrow">↓ &nbsp; ↓ &nbsp; ↓ &nbsp; ↓ &nbsp; ↓ &nbsp; ↓</div>
+  <div class="switch-fabric">
+    Hardware sensor switch fabric &nbsp;—&nbsp; raw data broadcast to both compute paths simultaneously
+  </div>
+  <div class="flow-arrow">↓ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ↓</div>
+
+  <!-- ══════════════════════════════════════════════
+       ROW 2 — MAIN ECU (NVIDIA ORIN)
+  ══════════════════════════════════════════════ -->
+  <div class="container container-main">
+    <div class="container-label">
+      <span class="ecu-badge ecu-orin">NVIDIA Orin — Main ECU</span>
+      <span style="color:var(--text-faint);font-size:9px">254 TOPS · AUTOSAR Adaptive · Linux RT</span>
+    </div>
+
+    <!-- Perception row -->
+    <div class="section-label">Perception (ML ⚙) — learned front-ends, borrowing from Approach A</div>
+    <div class="row" style="margin-bottom:8px">
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">Cam Obstacle Per.</div>
+        <div class="blk-sub">BEV CNN · multi-class det.</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">Cam Road Per.</div>
+        <div class="blk-sub">Lane seg. · sign classif.</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">LiDAR Per.</div>
+        <div class="blk-sub">PointNet · 3D det.</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">Radar Per.</div>
+        <div class="blk-sub">CFAR · track fusion</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-sensor flex-1">
+        <div class="blk-name">Localisation</div>
+        <div class="blk-sub">Map-match + IMU fusion</div>
+        <div class="blk-tag">EKF · ICP</div>
+      </div>
+      <div class="blk blk-safety flex-1">
+        <div class="blk-name">ODD Monitor</div>
+        <div class="blk-sub">Operational domain check<br>geo-fence · weather</div>
+        <div class="blk-tag">ISO 26262</div>
+      </div>
+    </div>
+
+    <!-- Fusion -->
+    <div class="flow-arrow" style="font-size:11px">↓ &nbsp; ↓ &nbsp; ↓ &nbsp; ↓ &nbsp; ↓</div>
+    <div style="margin-bottom:8px">
+      <div class="blk blk-ml w-full" style="flex-direction:row;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div class="blk-name" style="font-size:12px">WM Context Fusion &nbsp;—&nbsp; Lane Fusion &amp; Object Track Consolidation</div>
+          <div class="blk-sub" style="font-family:var(--mono)">Transformer-based cross-modal attention · 3D world model · obstacle list · drivable area</div>
+        </div>
+        <div class="blk-tag" style="white-space:nowrap">ML ⚙ · OpenSCENARIO</div>
+      </div>
+    </div>
+
+    <!-- Prediction row -->
+    <div class="flow-arrow" style="font-size:11px">↓</div>
+    <div class="section-label">Prediction (ML ⚙)</div>
+    <div class="row" style="margin-bottom:8px">
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">Ego Motion</div>
+        <div class="blk-sub">IMU + wheel odometry<br>kinematic model</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-ml flex-2">
+        <div class="blk-name">Agent Prediction</div>
+        <div class="blk-sub">Multi-modal trajectory net · 6 s horizon · probabilistic futures</div>
+        <div class="blk-tag">ML ⚙ · Wayformer-style</div>
+      </div>
+      <div class="blk blk-ml flex-1">
+        <div class="blk-name">Intent Classification</div>
+        <div class="blk-sub">Veh. / VRU intent<br>lane change, cross</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div class="blk blk-sensor flex-1">
+        <div class="blk-name">Map Provider</div>
+        <div class="blk-sub">Tile stream, live delta<br>updates via LTE/5G</div>
+        <div class="blk-tag">NDS.live</div>
+      </div>
+    </div>
+
+    <!-- Planning row -->
+    <div class="flow-arrow" style="font-size:11px">↓</div>
+    <div class="section-label">Planning — Approach C: ML cost fn. constrained by classical RSS safety gate (certifiable interface)</div>
+    <div class="row" style="margin-bottom:8px;align-items:stretch">
+      <div class="blk blk-plan flex-1">
+        <div class="blk-name">L3 Planner</div>
+        <div class="blk-sub">Learned cost fn. (RLHF)<br>comfort + efficiency<br>multi-agent aware</div>
+        <div class="blk-tag">ML ⚙</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 4px;color:var(--c-safety-t);font-size:14px">→</div>
+      <div class="safety-gate-wrap flex-2">
+        <div class="blk-name">Safety Gate</div>
+        <div class="blk-sub">RSS / reachability analysis · trajectory rejection<br>ASIL-C functional safety · TÜV-qualifiable</div>
+        <div class="blk-tag" style="margin-top:4px;background:#a8ecc8;border:1px solid var(--c-safety-b);color:var(--c-safety-t);font-family:var(--mono);font-size:8px;padding:1px 6px;border-radius:2px">EU 2022/1426 · ISO 26262</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 4px;color:var(--c-safety-t);font-size:14px">→</div>
+      <div class="blk blk-plan flex-1">
+        <div class="blk-name">Route Planner</div>
+        <div class="blk-sub">HD map routing<br>lane-level path</div>
+        <div class="blk-tag">A*</div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 4px;color:var(--c-plan-t);font-size:14px">→</div>
+      <div class="blk blk-safety flex-1">
+        <div class="blk-name">Active Safety</div>
+        <div class="blk-sub">AEB · FCW<br>emergency override</div>
+        <div class="blk-tag">ASIL-C</div>
+      </div>
+    </div>
+
+    <!-- Control row -->
+    <div class="flow-arrow" style="font-size:11px">↓</div>
+    <div class="section-label">Vehicle control</div>
+    <div class="row">
+      <div class="blk blk-ctrl flex-3">
+        <div class="blk-name">Controls — Lateral &amp; Longitudinal</div>
+        <div class="blk-sub">MPC · PID · actuator arbitration · trajectory tracking</div>
+        <div class="blk-tag">AUTOSAR Classic · CAN / Ethernet</div>
+      </div>
+      <div class="blk blk-safety flex-1">
+        <div class="blk-name">SEH + SSM</div>
+        <div class="blk-sub">System Error Handler<br>Safety State Machine</div>
+        <div class="blk-tag">ASIL-D decomp.</div>
+      </div>
+      <div class="blk blk-ctrl flex-1">
+        <div class="blk-name">Ego Motion Est.</div>
+        <div class="blk-sub">Vehicle state feedback<br>CAN wheel speed</div>
+        <div class="blk-tag">AUTOSAR</div>
+      </div>
+    </div>
+
+  </div><!-- /container-main -->
+
+  <!-- DOWN ARROW TO BUS -->
+  <div class="flow-arrow">↓ &nbsp; (approved trajectory + actuator cmds)</div>
+  <div class="vehicle-bus">
+    Vehicle Bus Gateway &nbsp;|&nbsp; CAN FD / Automotive Ethernet &nbsp;|&nbsp; Steer · Brake · Throttle · Shift
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       ROW 3 — AURIX TC4x SAFETY MCU (REDUNDANCY)
+  ══════════════════════════════════════════════ -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+
+    <div class="container container-aurix">
+      <div class="container-label">
+        <span class="ecu-badge ecu-aurix">Infineon Aurix TC4x — Safety MCU</span>
+        <span class="wd-tag">ASIL-D lockstep</span>
+      </div>
+      <div class="section-label">Hot-standby redundancy path &nbsp;—&nbsp; ISO 26262 ASIL-D, AUTOSAR Classic RTOS</div>
+
+      <div class="row" style="margin-bottom:8px;flex-wrap:wrap">
+        <div class="blk blk-aurix flex-1" style="min-width:140px">
+          <div class="blk-name">Watchdog &amp; Arbitration</div>
+          <div class="blk-sub">Monitors main Orin heartbeat + SEH signals. Triggers MRM on timeout / fault.</div>
+          <div class="blk-tag">Lockstep cores</div>
+        </div>
+        <div class="blk blk-aurix flex-1" style="min-width:140px">
+          <div class="blk-name">Minimal Perception</div>
+          <div class="blk-sub">LiDAR + Radar only (no BEV CNN). Occupancy grid for MRM corridor.</div>
+          <div class="blk-tag">Deterministic RT</div>
+        </div>
+      </div>
+      <div class="row" style="flex-wrap:wrap">
+        <div class="blk blk-aurix flex-1" style="min-width:140px">
+          <div class="blk-name">MRM Planner</div>
+          <div class="blk-sub">Rule-based pull-over / controlled stop. No ML in this path — certifiable.</div>
+          <div class="blk-tag">ASIL-D · rule-based</div>
+        </div>
+        <div class="blk blk-safety flex-1" style="min-width:140px">
+          <div class="blk-name">Safety Cross-Check</div>
+          <div class="blk-sub">Validates main planner output against reachability bounds. Raises SEH if divergent.</div>
+          <div class="blk-tag">RSS monitor</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--c-aurix-b)">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--c-aurix-t)">
+          MRM takeover: Aurix asserts bus arbitration → commands vehicle to pull to kerb at ≤ 30 km/h, hazards on, doors locked until ROPS clears<br>
+          <span style="color:var(--text-faint)">Cross-check path: Aurix always runs in parallel; normal ops = monitoring only, zero latency if takeover needed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         REMOTE OPS (ROPS)
+    ══════════════════════════════════════════════ -->
+    <div class="container container-remote">
+      <div class="container-label">
+        <span class="ecu-badge ecu-remote">Remote Operations Center — ROPS</span>
+        <span class="rops-tag">L3 Remote Support</span>
+      </div>
+      <div class="section-label">Teleop &amp; fleet oversight &nbsp;—&nbsp; NOT in the driving loop; advisory &amp; clearance only</div>
+
+      <div class="remote-cols" style="margin-bottom:8px">
+        <div class="blk blk-remote">
+          <div class="blk-name">Live Video Uplink</div>
+          <div class="blk-sub">5G / LTE fwd cam + interior. Low-latency HEVC.</div>
+          <div class="blk-tag">5G SA · HEVC</div>
+        </div>
+        <div class="blk blk-remote">
+          <div class="blk-name">Situation Awareness</div>
+          <div class="blk-sub">World model snapshot: tracks, ODD state, planned path.</div>
+          <div class="blk-tag">JSON · MQTT</div>
+        </div>
+        <div class="blk blk-remote">
+          <div class="blk-name">Remote Assist</div>
+          <div class="blk-sub">Operator clears edge case: construction, unusual ODD exit.</div>
+          <div class="blk-tag">Advisory cmd</div>
+        </div>
+        <div class="blk blk-remote">
+          <div class="blk-name">Fleet Monitor</div>
+          <div class="blk-sub">Health, ODD coverage, passenger state, fallback status.</div>
+          <div class="blk-tag">Dashboard</div>
+        </div>
+      </div>
+
+      <div class="row" style="flex-wrap:wrap">
+        <div class="blk blk-remote flex-1" style="min-width:160px">
+          <div class="blk-name">MRM Initiation (remote)</div>
+          <div class="blk-sub">Operator can trigger MRM remotely. Commands routed to Aurix, not Orin — keeps safety path independent of comms integrity.</div>
+          <div class="blk-tag">Aurix-gated</div>
+        </div>
+        <div class="blk blk-safety flex-1" style="min-width:160px">
+          <div class="blk-name">Comms Monitor</div>
+          <div class="blk-sub">Link watchdog. If 5G/LTE drops &gt; 10 s → Aurix notified → conservative MRM default (stop in place).</div>
+          <div class="blk-tag">Redundant SIM</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--c-remote-b)">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--c-remote-t)">
+          ROPS is advisory only under EU 2022/1426 — the vehicle is never driven remotely at operational speed.<br>
+          <span style="color:var(--text-faint)">Comms loss is handled autonomously via Aurix MRM; ROPS reconnects and clears for continuation if safe.</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dual grid -->
+
+</div><!-- /diagram -->
+</div><!-- /diagram-outer -->
+
+<!-- FOOTNOTES -->
+<div class="footnote">
+  <div class="footnote-item">Hybrid-C = ML perception (learned BEV front-ends, Approach A) feeding a safety-constrained classical planner (certifiable interfaces, Approach B). Deployed by every commercial L4 operator today (Waymo, Cruise, Zoox, Mobileye).</div>
+  <div class="footnote-item">Aurix TC4x replaces the "satellite ECU" concept from production ADAS (e.g. MB L2++ architecture). In L3 Robotaxi there is no human fallback ODD — the redundancy must be deterministic ASIL-D, not a reduced-ODD compute node.</div>
+  <div class="footnote-item">Safety Gate implements RSS (Responsibility-Sensitive Safety) reachability analysis. Any trajectory from the ML planner that violates the safety envelope is rejected and re-planned or escalated to MRM. This is the certifiability boundary under ISO 26262 / SOTIF.</div>
+  <div class="footnote-item">Remote Ops (ROPS) supports the L3 driverless use case: a human operator monitors a fleet, assists edge-case resolution, and can trigger MRM remotely. Commands are always routed through Aurix to preserve independence from the main compute path and from 5G link integrity.</div>
+</div>
+
+</body>
+</html>
