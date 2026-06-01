@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bliq — Part 4: Reality Check (timeline · team · budget)</title>
+<style>
+ :root{--ink:#15263a;--muted:#5b6b7a;--line:#dce3ea}
+ *{box-sizing:border-box}
+ body{margin:0;background:#eef2f6;color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+ .wrap{max-width:1120px;margin:0 auto;padding:24px 16px 60px}
+ h1{font-size:1.5rem;margin:0 0 4px} h2{font-size:1.15rem;margin:30px 0 10px}
+ .lead{color:var(--muted);font-size:.94rem;margin:6px 0 16px}
+ mark{background:#fff2ac;color:#3a2e00;padding:0 3px;border-radius:3px;font-weight:600}
+ .head{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px}
+ @media(max-width:760px){.head{grid-template-columns:1fr}}
+ .hc{background:#0f3d2a;color:#eafff2;border-radius:12px;padding:16px 18px}
+ .hc .k{color:#ffd23f;font-weight:800;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase}
+ .hc .v{font-size:1.35rem;font-weight:800;margin:6px 0 4px} .hc .s{font-size:.82rem;opacity:.9}
+ .assume{background:#fff;border:1px solid var(--line);border-left:6px solid #E0901B;border-radius:10px;padding:12px 16px;margin:14px 0}
+ .assume b{color:#b07a1f} .assume ul{margin:8px 0 0;padding-left:18px} .assume li{font-size:.86rem;margin:4px 0}
+ .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+ @media(max-width:860px){.timeline{grid-template-columns:1fr 1fr}}
+ @media(max-width:520px){.timeline{grid-template-columns:1fr}}
+ .tc{background:#fff;border:1px solid var(--line);border-top:5px solid var(--c);border-radius:10px;padding:12px 14px}
+ .tspan{font-weight:800;color:var(--c);font-size:.9rem} .ttitle{font-weight:700;font-size:.92rem;margin:3px 0 8px}
+ .tc ul{margin:0;padding-left:16px} .tc li{font-size:.8rem;margin:4px 0}
+ .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}
+ .card svg{width:100%;height:auto;display:block}
+ .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+ @media(max-width:760px){.two{grid-template-columns:1fr}}
+ .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+ .panel h3{margin:0 0 8px;font-size:1rem}
+ .panel.risk h3{color:#C0392B} .panel.bottle h3{color:#16406f}
+ .panel ul{margin:0;padding-left:18px;line-height:1.55} .panel li{font-size:.87rem;margin:6px 0}
+ .refs{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+ .refs a{font-size:.74rem;background:#eef3f7;color:#1565c0;text-decoration:none;padding:4px 9px;border-radius:14px;border:1px solid #dbe6ef}
+ .refs a:hover{background:#e0ecf6}
+ .reflink{text-align:center;margin-top:14px;font-size:.85rem} .reflink a{color:#1565c0}
+ .foot{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:18px;padding-top:12px;line-height:1.5}
+</style></head><body><div class="wrap">
+ <h1>Part 4 — Reality Check</h1>
+ <p class="lead">How long, how many people, and how much money to launch L4 in <b>one Berlin district</b>. Ranges, not point estimates — anyone giving a point estimate for an L4 rollout is either lying or wrong.</p>
+
+ <div class="head">
+  <div class="hc"><div class="k">Timeline</div><div class="v">4–6 years</div><div class="s">to commercial viability · 2.5–3 yrs to a loss-making driverless service</div></div>
+  <div class="hc"><div class="k">Team</div><div class="v">~120 engineers</div><div class="s">by year 3 · from ~30 today → ~60 at month 18 (non-linear)</div></div>
+  <div class="hc"><div class="k">Budget</div><div class="v">€144–218M</div><div class="s">to viability · €60–90M to first technical operation</div></div>
+ </div>
+
+ <div class="assume"><b>★ Stated assumption (drives every number below):</b>
+  <ul><li>Single Berlin district, ~10 km radius (~20–30 km of validated road), NOT a city-wide rollout.</li><li>Peak fleet ~15–20 retrofit vehicles — a tight-ODD service fleet, not a 300–500 commercial fleet.</li><li>ODD: ≤50 km/h, daylight, dry–light rain, weekday off-peak; remote supervisor under AFGBV §1f.</li><li>Hybrid stack on Autoware + safety MCU; foundation models offline only.</li><li>TÜV / KBA process runs roughly to plan (a generous assumption — see risks).</li></ul>
+  <span style="font-size:.82rem;color:#5b6b7a">This is deliberately <b>not</b> a 300–500-vehicle commercial fleet. At a ~10 km single-district ODD with daylight/dry/off-peak limits, a peak fleet of ~15–20 retrofit vehicles is the honest number — which lowers the fleet, insurance and ops lines accordingly versus a city-wide plan.</span>
+ </div>
+
+ <h2>Timeline</h2>
+ <div class="timeline"><div class="tc" style="--c:#1aa78f"><div class="tspan">0–6 mo</div><div class="ttitle">Stack consolidation + shadow mode</div><ul><li>Architecture frozen (hybrid; safety MCU + Orin)</li><li>5–10 cars, safety drivers, log everything</li><li>Remote-supervision platform built</li><li>TÜV in the room from month 1, not month 18</li></ul></div><div class="tc" style="--c:#3D7EBB"><div class="tspan">6–18 mo</div><div class="ttitle">Closed-loop validation + 1st AFGBV submission</div><ul><li>Fleet → ~15–20, still safety drivers</li><li>Weekly shadow-mode policy updates</li><li>First narrow safety case to KBA via TÜV</li><li>EU 2022/1426 type approval in parallel (12–18 mo)</li></ul></div><div class="tc" style="--c:#8E5CD9"><div class="tspan">18–30 mo</div><div class="ttitle">First driverless operation</div><ul><li>Operating-area approval received</li><li>Driverless in narrow ODD, 1:N ≤ 4 supervisor ratio</li><li>Conservative behaviour, low utilisation</li><li>Operating — but loss-making per ride</li></ul></div><div class="tc" style="--c:#E0901B"><div class="tspan">30–72 mo</div><div class="ttitle">ODD expansion → commercial viability</div><ul><li>Relax one constraint at a time (hours → weather → speed)</li><li>Supervisor ratio improves 1:4 → 1:10+</li><li>Fleet to low dozens within this district</li><li>Approach per-ride break-even (the painful phase)</li></ul></div></div>
+
+ <h2>Budget (recalculated for the small-fleet ODD)</h2>
+ <div class="card"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 474" font-family="Segoe UI, Arial, sans-serif"><rect x="0" y="0" width="980" height="474" fill="#fff"/><text x="40" y="30" font-size="17" font-weight="800" fill="#15263a">Where the budget goes — total €144–218M to commercial viability</text><text x="288" y="91" font-size="13" fill="#1d2630" text-anchor="end">Engineering salaries (4y)</text>
+<rect x="300" y="70" width="560" height="30" rx="5" fill="#dce6ef"/>
+<rect x="720" y="70" width="140" height="30" rx="5" fill="#2E9E5B"/>
+<text x="868" y="91" font-size="12.5" font-weight="700" fill="#15263a">€90–120M</text>
+<text x="288" y="139" font-size="13" fill="#1d2630" text-anchor="end">Vehicle fleet retrofit</text>
+<rect x="300" y="118" width="28" height="30" rx="5" fill="#dce6ef"/>
+<rect x="314" y="118" width="14" height="30" rx="5" fill="#2E9E5B"/>
+<text x="336" y="139" font-size="12.5" font-weight="700" fill="#15263a">€3–6M</text>
+<text x="288" y="187" font-size="13" fill="#1d2630" text-anchor="end">Compute (training + sim)</text>
+<rect x="300" y="166" width="117" height="30" rx="5" fill="#dce6ef"/>
+<rect x="370" y="166" width="47" height="30" rx="5" fill="#2E9E5B"/>
+<text x="425" y="187" font-size="12.5" font-weight="700" fill="#15263a">€15–25M</text>
+<text x="288" y="235" font-size="13" fill="#1d2630" text-anchor="end">Sensor &amp; HW development</text>
+<rect x="300" y="214" width="70" height="30" rx="5" fill="#dce6ef"/>
+<rect x="337" y="214" width="33" height="30" rx="5" fill="#2E9E5B"/>
+<text x="378" y="235" font-size="12.5" font-weight="700" fill="#15263a">€8–15M</text>
+<text x="288" y="283" font-size="13" fill="#1d2630" text-anchor="end">Regulatory, TÜV, legal</text>
+<rect x="300" y="262" width="47" height="30" rx="5" fill="#dce6ef"/>
+<rect x="323" y="262" width="23" height="30" rx="5" fill="#2E9E5B"/>
+<text x="355" y="283" font-size="12.5" font-weight="700" fill="#15263a">€5–10M</text>
+<text x="288" y="331" font-size="13" fill="#1d2630" text-anchor="end">Operations buildout</text>
+<rect x="300" y="310" width="65" height="30" rx="5" fill="#dce6ef"/>
+<rect x="337" y="310" width="28" height="30" rx="5" fill="#2E9E5B"/>
+<text x="373" y="331" font-size="12.5" font-weight="700" fill="#15263a">€8–14M</text>
+<text x="288" y="379" font-size="13" fill="#1d2630" text-anchor="end">Insurance / liability reserve</text>
+<rect x="300" y="358" width="47" height="30" rx="5" fill="#dce6ef"/>
+<rect x="323" y="358" width="23" height="30" rx="5" fill="#2E9E5B"/>
+<text x="355" y="379" font-size="12.5" font-weight="700" fill="#15263a">€5–10M</text>
+<text x="288" y="427" font-size="13" fill="#1d2630" text-anchor="end">G&amp;A, sales, marketing</text>
+<rect x="300" y="406" width="84" height="30" rx="5" fill="#dce6ef"/>
+<rect x="347" y="406" width="37" height="30" rx="5" fill="#2E9E5B"/>
+<text x="392" y="427" font-size="12.5" font-weight="700" fill="#15263a">€10–18M</text>
+<line x1="300" y1="55" x2="300" y2="442" stroke="#eef2f6"/>
+<text x="300" y="48" font-size="11" fill="#889" text-anchor="middle">€0M</text>
+<line x1="393" y1="55" x2="393" y2="442" stroke="#eef2f6"/>
+<text x="393" y="48" font-size="11" fill="#889" text-anchor="middle">€20M</text>
+<line x1="487" y1="55" x2="487" y2="442" stroke="#eef2f6"/>
+<text x="487" y="48" font-size="11" fill="#889" text-anchor="middle">€40M</text>
+<line x1="580" y1="55" x2="580" y2="442" stroke="#eef2f6"/>
+<text x="580" y="48" font-size="11" fill="#889" text-anchor="middle">€60M</text>
+<line x1="673" y1="55" x2="673" y2="442" stroke="#eef2f6"/>
+<text x="673" y="48" font-size="11" fill="#889" text-anchor="middle">€80M</text>
+<line x1="767" y1="55" x2="767" y2="442" stroke="#eef2f6"/>
+<text x="767" y="48" font-size="11" fill="#889" text-anchor="middle">€100M</text>
+<line x1="860" y1="55" x2="860" y2="442" stroke="#eef2f6"/>
+<text x="860" y="48" font-size="11" fill="#889" text-anchor="middle">€120M</text></svg></div>
+
+ <h2>Assumptions · Risks · Bottlenecks</h2>
+ <div class="two">
+  <div class="panel risk"><h3>Biggest risks</h3><ul><li><mark>Regulatory timeline is the dominant risk</mark> — AFGBV operating-area approval has little precedent; a 6–12 month slip is plausible and outside engineering control.</li><li><mark>The long tail of urban edge cases</mark> — even a tight ODD contains jaywalkers, construction, emergency vehicles, ambiguous junctions; the last 5% of disengagements costs more than the first 95%.</li><li>Remote-supervision economics — if the sustainable supervisor ratio stays near 1:3–1:4, the service stays loss-making; the whole model depends on improving it.</li><li>Capital-market risk — the plan needs a Series B and C; an AV-funding winter (post-Cruise) could strand the company mid-build.</li><li>Connectivity-loss failure mode — unique to the remote-supervision model; must degrade to a safe stop, and that path itself needs certifying.</li></ul></div>
+  <div class="panel bottle"><h3>Most likely bottlenecks</h3><ul><li><mark>Validation throughput, not model accuracy, is the rate-limiter.</mark> Turning supervisor interventions into validated releases is the slowest loop.</li><li>TÜV/KBA assessment bandwidth — a small number of qualified assessors gate every safety-case milestone.</li><li>Senior generalist hiring in years 1–2 — people who can span vehicle + autonomy + safety are scarce in Berlin and set the pace of everything else.</li><li>Simulation-to-road correlation — the safety case ultimately needs real miles no amount of sim can substitute.</li></ul></div>
+ </div>
+
+ <div class="refs"><a href="https://www.youtube.com/watch?v=BV4EXwlb3yo" target="_blank" rel="noopener">Waymo — long-tail of urban driving &amp; validation scale (Anguelov)</a><a href="https://youtu.be/sliYTyRpRB8" target="_blank" rel="noopener">Cruise shutdown — cautionary tale on AV capital &amp; operations</a><a href="https://eur-lex.europa.eu/eli/reg_impl/2022/1426/oj" target="_blank" rel="noopener">EU 2022/1426 — L4 type-approval pathway</a><a href="https://www.gesetze-im-internet.de/afgbv/" target="_blank" rel="noopener">AFGBV — operating-area approval + technical supervisor</a><a href="https://www.iso.org/standard/77490.html" target="_blank" rel="noopener">ISO 21448 (SOTIF) — the edge-case / validation standard</a></div>
+ <p class="reflink">Full source list: <a href="https://chetan-shankar.github.io/Bliq.ai/References.html" target="_blank" rel="noopener">References.html</a></p>
+ <p class="foot">Original engineering judgement. Figures are deliberate ranges calibrated against public AV programmes (Waymo, Cruise) and EU/German regulatory reality; they are directional, not a budget. Fleet sizing recalculated for a single-district ODD per the stated assumption.</p>
+</div></body></html>
