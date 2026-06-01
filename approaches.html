@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bliq — Four AV Stack Approaches</title>
+<style>body{margin:0;background:#eef2f6;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1d2630}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 64px}
+svg{width:100%;height:auto;background:#fff;border:1px solid #d3dce4;border-radius:12px}
+h2{font-size:1.05rem;margin:26px 0 8px}ul{line-height:1.7}
+a{color:#1565c0;text-decoration:none}a:hover{text-decoration:underline}
+.note{color:#5b6b7a;font-size:.85rem}</style></head><body><div class="wrap">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1090" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect x="0" y="0" width="1440" height="1090" fill="#f4f7fa"/>
+<defs>
+<marker id="arA" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E76F51"/></marker>
+<marker id="arB" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3D7EBB"/></marker>
+<marker id="arC" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2E9E5B"/></marker>
+<marker id="arD" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8E5CD9"/></marker>
+</defs>
+<text x="32" y="46" font-size="30" font-weight="700" fill="#1d2630">Four Shapes of the Production AV Stack — 2026</text>
+<text x="32" y="74" font-size="15" fill="#5b6b7a">Each is a philosophy, not a fixed design. Real companies sit on a spectrum between them. Colour = strength (green) → weakness (red).</text>
+<rect x="26" y="86" width="342" height="804" rx="14" fill="#ffffff" stroke="#E76F51" stroke-width="1.2" opacity="0.95"/>
+<rect x="32" y="92" width="330" height="86" rx="10" fill="#E76F51"/>
+<text x="48" y="122" font-size="20" font-weight="800" fill="#fff">A</text>
+<text x="74" y="122" font-size="17" font-weight="700" fill="#fff">End-to-End Vision</text>
+<text x="48" y="144" font-size="11.5" fill="#ffffff" opacity="0.92">Tesla FSD v12+, Wayve</text>
+<text x="48" y="164" font-size="11.5" font-style="italic" fill="#fff" opacity="0.95">pixels → trajectory</text>
+<rect x="54" y="239.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="197.0" y="260.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Cameras only</text>
+<line x1="197.0" y1="273.0" x2="197.0" y2="351.0" stroke="#E76F51" stroke-width="2.4" marker-end="url(#arA)"/>
+<rect x="54" y="353.0" width="286" height="46" rx="8" fill="#E76F51" stroke="#E76F51" stroke-width="2"/>
+<text x="197.0" y="380.0" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">SINGLE NEURAL NET</text>
+<line x1="197.0" y1="399.0" x2="197.0" y2="477.0" stroke="#E76F51" stroke-width="2.4" marker-end="url(#arA)"/>
+<rect x="54" y="479.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="197.0" y="500.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Trajectory</text>
+<text x="46" y="600" font-size="11" fill="#5b6b7a">Interpretability</text>
+<rect x="220" y="586" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="284.0" y="601" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Low</text>
+<text x="46" y="632" font-size="11" fill="#5b6b7a">Safety case</text>
+<rect x="220" y="618" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="284.0" y="633" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Hard</text>
+<text x="46" y="664" font-size="11" fill="#5b6b7a">Data hunger</text>
+<rect x="220" y="650" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="284.0" y="665" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Very high</text>
+<text x="46" y="696" font-size="11" fill="#5b6b7a">Long-tail</text>
+<rect x="220" y="682" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="284.0" y="697" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Data-dependent</text>
+<text x="46" y="728" font-size="11" fill="#5b6b7a">ODD scalability</text>
+<rect x="220" y="714" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="284.0" y="729" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Excellent</text>
+<rect x="42" y="792" width="310" height="92" rx="9" fill="#fbe9e3" stroke="#E76F51" stroke-width="1"/>
+<text x="54" y="814" font-size="11.5" font-weight="800" fill="#E76F51">DEPLOYMENT REALITY 2026</text>
+<text x="54" y="834" font-size="11.5" fill="#1d2630">Ships in consumer L2+ (Tesla). Not</text>
+<text x="54" y="850" font-size="11.5" fill="#1d2630">EU-certifiable as sole authority. [1]</text>
+<rect x="374" y="86" width="342" height="804" rx="14" fill="#ffffff" stroke="#3D7EBB" stroke-width="1.2" opacity="0.95"/>
+<rect x="380" y="92" width="330" height="86" rx="10" fill="#3D7EBB"/>
+<text x="396" y="122" font-size="20" font-weight="800" fill="#fff">B</text>
+<text x="422" y="122" font-size="17" font-weight="700" fill="#fff">Classical Modular</text>
+<text x="396" y="144" font-size="11.5" fill="#ffffff" opacity="0.92">Older Waymo, Apollo, Autoware</text>
+<text x="396" y="164" font-size="11.5" font-style="italic" fill="#fff" opacity="0.95">discrete modules, defined interfaces</text>
+<rect x="402" y="209.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="545.0" y="230.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Cam+LiDAR+Radar+GNSS/IMU</text>
+<line x1="545.0" y1="243.0" x2="545.0" y2="267.0" stroke="#3D7EBB" stroke-width="2.4" marker-end="url(#arB)"/>
+<rect x="402" y="269.0" width="286" height="34" rx="8" fill="#dfe8f1" stroke="#9fb4c6" stroke-width="1.3"/>
+<text x="545.0" y="290.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Perception</text>
+<line x1="545.0" y1="303.0" x2="545.0" y2="327.0" stroke="#3D7EBB" stroke-width="2.4" marker-end="url(#arB)"/>
+<rect x="402" y="329.0" width="286" height="34" rx="8" fill="#dfe8f1" stroke="#9fb4c6" stroke-width="1.3"/>
+<text x="545.0" y="350.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Prediction</text>
+<line x1="545.0" y1="363.0" x2="545.0" y2="387.0" stroke="#3D7EBB" stroke-width="2.4" marker-end="url(#arB)"/>
+<rect x="402" y="389.0" width="286" height="34" rx="8" fill="#dfe8f1" stroke="#9fb4c6" stroke-width="1.3"/>
+<text x="545.0" y="410.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Planning (rules)</text>
+<line x1="545.0" y1="423.0" x2="545.0" y2="447.0" stroke="#3D7EBB" stroke-width="2.4" marker-end="url(#arB)"/>
+<rect x="402" y="449.0" width="286" height="34" rx="8" fill="#dfe8f1" stroke="#9fb4c6" stroke-width="1.3"/>
+<text x="545.0" y="470.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Vehicle Control</text>
+<text x="545.0" y="530.0" font-size="10.5" font-style="italic" fill="#5b6b7a" text-anchor="middle">— every interface observable —</text>
+<text x="394" y="600" font-size="11" fill="#5b6b7a">Interpretability</text>
+<rect x="568" y="586" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="632.0" y="601" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">High</text>
+<text x="394" y="632" font-size="11" fill="#5b6b7a">Safety case</text>
+<rect x="568" y="618" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="632.0" y="633" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Strong</text>
+<text x="394" y="664" font-size="11" fill="#5b6b7a">Data hunger</text>
+<rect x="568" y="650" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="632.0" y="665" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Lowest</text>
+<text x="394" y="696" font-size="11" fill="#5b6b7a">Long-tail</text>
+<rect x="568" y="682" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="632.0" y="697" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Brittle</text>
+<text x="394" y="728" font-size="11" fill="#5b6b7a">ODD scalability</text>
+<rect x="568" y="714" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="632.0" y="729" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Poor</text>
+<rect x="390" y="792" width="310" height="92" rx="9" fill="#e4eef8" stroke="#3D7EBB" stroke-width="1"/>
+<text x="402" y="814" font-size="11.5" font-weight="800" fill="#3D7EBB">DEPLOYMENT REALITY 2026</text>
+<text x="402" y="834" font-size="11.5" fill="#1d2630">Strawman in 2026 — pure rule-based</text>
+<text x="402" y="850" font-size="11.5" fill="#1d2630">planners can&#x27;t handle modern urban</text>
+<text x="402" y="866" font-size="11.5" fill="#1d2630">scenes. [2][3]</text>
+<rect x="722" y="86" width="342" height="804" rx="14" fill="#ffffff" stroke="#2E9E5B" stroke-width="3" opacity="1"/>
+<rect x="728" y="92" width="330" height="86" rx="10" fill="#2E9E5B"/>
+<text x="744" y="122" font-size="20" font-weight="800" fill="#fff">C</text>
+<text x="770" y="122" font-size="17" font-weight="700" fill="#fff">Hybrid</text>
+<text x="744" y="144" font-size="11.5" fill="#ffffff" opacity="0.92">Waymo today, Cruise, Zoox, Mobileye</text>
+<text x="744" y="164" font-size="11.5" font-style="italic" fill="#fff" opacity="0.95">modular shape, ML inside each module</text>
+<rect x="972" y="78" width="92" height="26" rx="13" fill="#ffd23f" stroke="#1d2630" stroke-width="1"/>
+<text x="1018" y="96" font-size="12.5" font-weight="800" fill="#1d2630" text-anchor="middle">★ BLIQ</text>
+<rect x="750" y="215.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="893.0" y="236.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Cam+LiDAR+Radar+GNSS/IMU</text>
+<line x1="893.0" y1="249.0" x2="893.0" y2="285.0" stroke="#2E9E5B" stroke-width="2.4" marker-end="url(#arC)"/>
+<rect x="750" y="287.0" width="286" height="34" rx="8" fill="#e3f3ea" stroke="#2E9E5B" stroke-width="1.3"/>
+<text x="893.0" y="308.0" font-size="11.5" font-weight="700" fill="#1d2630" text-anchor="middle">Perception  ⚙ ML</text>
+<line x1="893.0" y1="321.0" x2="893.0" y2="357.0" stroke="#2E9E5B" stroke-width="2.4" marker-end="url(#arC)"/>
+<rect x="750" y="359.0" width="286" height="34" rx="8" fill="#e3f3ea" stroke="#2E9E5B" stroke-width="1.3"/>
+<text x="893.0" y="380.0" font-size="11.5" font-weight="700" fill="#1d2630" text-anchor="middle">Prediction  ⚙ ML</text>
+<line x1="893.0" y1="393.0" x2="893.0" y2="429.0" stroke="#2E9E5B" stroke-width="2.4" marker-end="url(#arC)"/>
+<rect x="750" y="431.0" width="286" height="34" rx="8" fill="#fff4e2" stroke="#C0392B" stroke-width="2"/>
+<text x="893.0" y="452.0" font-size="11.5" font-weight="800" fill="#7a2a18" text-anchor="middle">Planner ⚙ ML  +  SAFETY GATE</text>
+<line x1="893.0" y1="465.0" x2="893.0" y2="501.0" stroke="#2E9E5B" stroke-width="2.4" marker-end="url(#arC)"/>
+<rect x="750" y="503.0" width="286" height="34" rx="8" fill="#dfe8f1" stroke="#9fb4c6" stroke-width="1.3"/>
+<text x="893.0" y="524.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Vehicle Control</text>
+<text x="742" y="600" font-size="11" fill="#5b6b7a">Interpretability</text>
+<rect x="916" y="586" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="980.0" y="601" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Medium</text>
+<text x="742" y="632" font-size="11" fill="#5b6b7a">Safety case</text>
+<rect x="916" y="618" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="980.0" y="633" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Strong</text>
+<text x="742" y="664" font-size="11" fill="#5b6b7a">Data hunger</text>
+<rect x="916" y="650" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="980.0" y="665" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Medium</text>
+<text x="742" y="696" font-size="11" fill="#5b6b7a">Long-tail</text>
+<rect x="916" y="682" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="980.0" y="697" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Better</text>
+<text x="742" y="728" font-size="11" fill="#5b6b7a">ODD scalability</text>
+<rect x="916" y="714" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="980.0" y="729" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Moderate</text>
+<rect x="738" y="792" width="310" height="92" rx="9" fill="#e3f3ea" stroke="#2E9E5B" stroke-width="1"/>
+<text x="750" y="814" font-size="11.5" font-weight="800" fill="#2E9E5B">DEPLOYMENT REALITY 2026</text>
+<text x="750" y="834" font-size="11.5" fill="#1d2630">Where every commercial L4 operator</text>
+<text x="750" y="850" font-size="11.5" fill="#1d2630">actually lives today. [4][5]</text>
+<rect x="1070" y="86" width="342" height="804" rx="14" fill="#ffffff" stroke="#8E5CD9" stroke-width="1.2" opacity="0.95"/>
+<rect x="1076" y="92" width="330" height="86" rx="10" fill="#8E5CD9"/>
+<text x="1092" y="122" font-size="20" font-weight="800" fill="#fff">D</text>
+<text x="1118" y="122" font-size="17" font-weight="700" fill="#fff">VLA / Foundation Model</text>
+<text x="1092" y="144" font-size="11.5" fill="#ffffff" opacity="0.92">NVIDIA Alpamayo, Waymo EMMA, LINGO</text>
+<text x="1092" y="164" font-size="11.5" font-style="italic" fill="#fff" opacity="0.95">pretrained VLM backbone + action head</text>
+<rect x="1098" y="215.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="1241.0" y="236.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Video + Nav text + Ego state</text>
+<line x1="1241.0" y1="249.0" x2="1241.0" y2="279.0" stroke="#8E5CD9" stroke-width="2.4" marker-end="url(#arD)"/>
+<rect x="1098" y="281.0" width="286" height="46" rx="8" fill="#8E5CD9" stroke="#8E5CD9" stroke-width="2"/>
+<text x="1241.0" y="308.0" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">Pre-trained VLM Backbone</text>
+<line x1="1241.0" y1="327.0" x2="1241.0" y2="357.0" stroke="#8E5CD9" stroke-width="2.4" marker-end="url(#arD)"/>
+<rect x="1098" y="359.0" width="286" height="34" rx="8" fill="#efe7fb" stroke="#8E5CD9" stroke-width="1.3"/>
+<text x="1241.0" y="380.0" font-size="11.5" font-weight="700" fill="#1d2630" text-anchor="middle">Action Head</text>
+<line x1="1241.0" y1="393.0" x2="1241.0" y2="429.0" stroke="#8E5CD9" stroke-width="2.4" marker-end="url(#arD)"/>
+<rect x="1098" y="431.0" width="286" height="34" rx="8" fill="#fff4e2" stroke="#C0392B" stroke-width="2"/>
+<text x="1241.0" y="452.0" font-size="11.5" font-weight="800" fill="#7a2a18" text-anchor="middle">CLASSICAL SAFETY OVERLAY</text>
+<line x1="1241.0" y1="465.0" x2="1241.0" y2="501.0" stroke="#8E5CD9" stroke-width="2.4" marker-end="url(#arD)"/>
+<rect x="1098" y="503.0" width="286" height="34" rx="8" fill="#eef2f6" stroke="#c4cfd9" stroke-width="1.3"/>
+<text x="1241.0" y="524.0" font-size="11.5" font-weight="600" fill="#1d2630" text-anchor="middle">Trajectory</text>
+<text x="1090" y="600" font-size="11" fill="#5b6b7a">Interpretability</text>
+<rect x="1264" y="586" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="1328.0" y="601" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Medium</text>
+<text x="1090" y="632" font-size="11" fill="#5b6b7a">Safety case</text>
+<rect x="1264" y="618" width="128" height="22" rx="11" fill="#C0392B"/>
+<text x="1328.0" y="633" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Hard</text>
+<text x="1090" y="664" font-size="11" fill="#5b6b7a">Data hunger</text>
+<rect x="1264" y="650" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="1328.0" y="665" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Low @ deploy</text>
+<text x="1090" y="696" font-size="11" fill="#5b6b7a">Long-tail</text>
+<rect x="1264" y="682" width="128" height="22" rx="11" fill="#E0901B"/>
+<text x="1328.0" y="697" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Best in theory</text>
+<text x="1090" y="728" font-size="11" fill="#5b6b7a">ODD scalability</text>
+<rect x="1264" y="714" width="128" height="22" rx="11" fill="#2E7D32"/>
+<text x="1328.0" y="729" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">Excellent</text>
+<rect x="1086" y="792" width="310" height="92" rx="9" fill="#efe7fb" stroke="#8E5CD9" stroke-width="1"/>
+<text x="1098" y="814" font-size="11.5" font-weight="800" fill="#8E5CD9">DEPLOYMENT REALITY 2026</text>
+<text x="1098" y="834" font-size="11.5" fill="#1d2630">Mostly teacher / research models. First</text>
+<text x="1098" y="850" font-size="11.5" fill="#1d2630">prod: Mercedes CLA + NVIDIA, VLA wrapped</text>
+<text x="1098" y="866" font-size="11.5" fill="#1d2630">by classical safety. [6]</text>
+<rect x="32" y="906" width="1376" height="86" rx="12" fill="#0f3d2a"/>
+<rect x="32" y="906" width="8" height="86" rx="4" fill="#2E9E5B"/>
+<text x="58" y="936" font-size="16" font-weight="800" fill="#ffd23f">★ BLIQ RECOMMENDATION → Build C (Hybrid)</text>
+<text x="58" y="960" font-size="13" fill="#eafff2">Learned perception (borrow A’s neural front-ends) feeding a classical, RSS-style safety-constrained planner (keep B’s certifiable interfaces).</text>
+<text x="58" y="980" font-size="13" fill="#eafff2">Use D strictly OFFLINE — auto-labelling, edge-case mining, closed-loop sim. Never the sole in-loop authority under EU 2022/1426.</text>
+</svg>
+<h2>References</h2><ul><li><a href="https://medium.com/@karpathy/software-2-0-a64152b37c35" target="_blank" rel="noopener">[1] Karpathy — Software 2.0 (essay)</a></li>
+<li><a href="https://www.youtube.com/watch?v=BV4EXwlb3yo" target="_blank" rel="noopener">[2] Anguelov — ML for Autonomous Driving at Scale (modular stack)</a></li>
+<li><a href="https://github.com/ApolloAuto/apollo" target="_blank" rel="noopener">[3] Apollo (open modular stack)</a></li>
+<li><a href="https://www.youtube.com/watch?v=HPWGFzqd7pI" target="_blank" rel="noopener">[4] Mobileye CES — &#x27;An Hour with Amnon&#x27; (RSS safety layer)</a></li>
+<li><a href="https://arxiv.org/abs/1812.03079" target="_blank" rel="noopener">[5] ChauffeurNet — learned planning</a></li>
+<li><a href="https://waymo.com/blog/2024/10/introducing-emma/" target="_blank" rel="noopener">[6] Waymo EMMA — multimodal foundation model</a></li></ul>
+<p class="note">Diagram is original work summarising the four AV-stack approaches. References support the deployment-reality claims per column.</p>
+</div></body></html>
