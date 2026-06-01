@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bliq — L4 Robotaxi Platform Architecture</title>
+<style>
+ body{margin:0;background:#eef2f6;color:#1d2630;font-family:Segoe UI,Helvetica,Arial,sans-serif}
+ .wrap{max-width:1240px;margin:0 auto;padding:24px 16px 64px}
+ .diagram{background:#fff;border:1px solid #d3dce4;border-radius:12px;padding:10px}
+ .diagram svg{width:100%;height:auto;display:block}
+ h1{font-size:1.4rem;margin:0 0 14px}
+ h2{font-size:1.1rem;margin:30px 0 6px}
+ h3{font-size:.96rem;margin:18px 0 4px;color:#16406f}
+ ul{margin:0;line-height:1.65} li{margin:3px 0}
+ a{color:#1565c0;text-decoration:none} a:hover{text-decoration:underline}
+ .muted{color:#5b6b7a;font-size:.85rem}
+ .note{color:#5b6b7a;font-size:.85rem;margin-top:24px;border-top:1px solid #d3dce4;padding-top:14px}
+</style></head><body><div class="wrap">
+ <h1>Level 4 Robotaxi Platform — Bliq (architecture &amp; sources)</h1>
+ <div class="diagram"><svg viewBox="0 0 2240 1500" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a6fb5"/><stop offset="1" stop-color="#16406f"/>
+    </linearGradient>
+    <linearGradient id="lblue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eaf1fb"/><stop offset="1" stop-color="#c2d4ee"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1aa78f"/><stop offset="1" stop-color="#12806d"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0aeb5"/><stop offset="1" stop-color="#e0808c"/>
+    </linearGradient>
+    <!-- ODD = amber -->
+    <linearGradient id="odd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffcf66"/><stop offset="1" stop-color="#f2a516"/>
+    </linearGradient>
+    <!-- Remote assistance = violet -->
+    <linearGradient id="ra" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9a8f0"/><stop offset="1" stop-color="#8b5fd6"/>
+    </linearGradient>
+    <linearGradient id="safe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe1e1"/><stop offset="1" stop-color="#f3b0b0"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0e6f5c"/>
+    </marker>
+    <marker id="arrA" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c47f00"/>
+    </marker>
+    <marker id="arrV" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6f3fc0"/>
+    </marker>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="135%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+    <style>
+      .h{fill:#111;font-size:46px;font-weight:bold;}
+      .sub{fill:#444;font-size:22px;}
+      .blk{fill:#10243f;font-size:23px;font-weight:bold;}
+      .blks{fill:#10243f;font-size:18px;}
+      .sens{fill:#fff;font-size:23px;font-weight:bold;}
+      .act{fill:#3a1418;font-size:23px;font-weight:bold;}
+      .wtitle{fill:#fff;font-size:26px;font-weight:bold;}
+      .oddt{fill:#3a2600;font-size:25px;font-weight:bold;}
+      .oddtx{fill:#3a2600;font-size:19px;}
+      .rat{fill:#fff;font-size:25px;font-weight:bold;}
+      .ratx{fill:#f3ecff;font-size:19px;}
+      .leg{font-size:20px;fill:#222;}
+      .arrow{stroke:#0e6f5c;stroke-width:4;fill:none;}
+      .arrowA{stroke:#c47f00;stroke-width:4;fill:none;stroke-dasharray:10 7;}
+      .arrowV{stroke:#6f3fc0;stroke-width:4;fill:none;stroke-dasharray:10 7;}
+    </style>
+  </defs>
+
+  <text class="h" x="40" y="70">Level 4 Robotaxi Platform — Bliq</text>
+  <text class="sub" x="40" y="104">Berlin district ODD · ≤50 km/h · no safety driver · remote assistance on demand · AFGBV §1f StVG</text>
+
+  <!-- ===== Legend ===== -->
+  <rect x="1560" y="40" width="30" height="22" rx="3" fill="url(#odd)" stroke="#c47f00"/>
+  <text class="leg" x="1600" y="58">ODD / Geofencing</text>
+  <rect x="1560" y="74" width="30" height="22" rx="3" fill="url(#ra)" stroke="#6f3fc0"/>
+  <text class="leg" x="1600" y="92">Remote Assistance</text>
+  <rect x="1880" y="40" width="30" height="22" rx="3" fill="url(#teal)"/>
+  <text class="leg" x="1920" y="58">Autonomy stack</text>
+  <rect x="1880" y="74" width="30" height="22" rx="3" fill="url(#safe)" stroke="#c66"/>
+  <text class="leg" x="1920" y="92">Safety / fallback</text>
+
+  <!-- ============ ODD GOVERNANCE BAND (top, amber) ============ -->
+  <rect x="40" y="150" width="2160" height="150" rx="20" fill="url(#odd)" stroke="#c47f00" stroke-width="2" filter="url(#sh)"/>
+  <text class="oddt" x="70" y="195">ODD Manager / Geofencing  (AFGBV §1f StVG)</text>
+  <text class="oddtx" x="70" y="232">• Geofence: one Berlin district, single fixed route / zone</text>
+  <text class="oddtx" x="70" y="262">• Speed cap ≤ 50 km/h enforced</text>
+  <text class="oddtx" x="800" y="232">• Weather gate: daylight, dry → light rain only</text>
+  <text class="oddtx" x="800" y="262">• Time window: weekday off-peak hours</text>
+  <text class="oddtx" x="1480" y="232">• Continuous ODD-exit monitor</text>
+  <text class="oddtx" x="1480" y="262">• ODD breach → triggers Minimal-Risk Maneuver</text>
+
+  <!-- arrows from ODD band down into planner & MRM (amber dashed) -->
+  <line class="arrowA" x1="1120" y1="300" x2="1120" y2="690" marker-end="url(#arrA)"/>
+  <text class="oddtx" x="1130" y="500" fill="#8a5b00">constrains</text>
+
+  <!-- ============ SENSORS (left) ============ -->
+  <text class="blk" x="60" y="400" fill="#16406f">Sensor Suite</text>
+  <rect x="40" y="420" width="320" height="64" rx="4" fill="url(#blue)" filter="url(#sh)"/>
+  <rect x="40" y="496" width="320" height="64" rx="4" fill="url(#blue)" filter="url(#sh)"/>
+  <rect x="40" y="572" width="320" height="64" rx="4" fill="url(#blue)" filter="url(#sh)"/>
+  <rect x="40" y="648" width="320" height="64" rx="4" fill="url(#blue)" filter="url(#sh)"/>
+  <text class="sens" x="200" y="460" text-anchor="middle">Cameras (360°)</text>
+  <text class="sens" x="200" y="536" text-anchor="middle">LiDAR</text>
+  <text class="sens" x="200" y="612" text-anchor="middle">Radar</text>
+  <text class="sens" x="200" y="688" text-anchor="middle">GNSS / IMU + HD Map</text>
+
+  <!-- ============ MAIN COMPUTE pipeline (teal container) ============ -->
+  <rect x="420" y="360" width="1340" height="420" rx="22" fill="url(#teal)" filter="url(#sh)"/>
+  <text class="wtitle" x="440" y="402">Main AD Compute — NVIDIA Drive AGX Orin   (ASIL-D, ROS2)</text>
+
+  <rect x="450" y="430" width="250" height="120" rx="6" fill="url(#lblue)" stroke="#3b6fb5" stroke-width="2"/>
+  <rect x="730" y="430" width="250" height="120" rx="6" fill="url(#lblue)" stroke="#3b6fb5" stroke-width="2"/>
+  <rect x="1010" y="430" width="250" height="120" rx="6" fill="url(#lblue)" stroke="#3b6fb5" stroke-width="2"/>
+  <rect x="1290" y="430" width="250" height="120" rx="6" fill="url(#lblue)" stroke="#3b6fb5" stroke-width="2"/>
+  <rect x="1290" y="600" width="250" height="120" rx="6" fill="url(#safe)" stroke="#c66" stroke-width="2"/>
+  <text class="blk" x="575" y="478" text-anchor="middle">Perception</text>
+  <text class="blks" x="575" y="506" text-anchor="middle">detect · track ·</text>
+  <text class="blks" x="575" y="528" text-anchor="middle">fuse · localize</text>
+  <text class="blk" x="855" y="478" text-anchor="middle">Prediction</text>
+  <text class="blks" x="855" y="506" text-anchor="middle">agent intent /</text>
+  <text class="blks" x="855" y="528" text-anchor="middle">multimodal</text>
+  <text class="blk" x="1135" y="478" text-anchor="middle">Planning</text>
+  <text class="blks" x="1135" y="506" text-anchor="middle">behavior +</text>
+  <text class="blks" x="1135" y="528" text-anchor="middle">trajectory</text>
+  <text class="blk" x="1415" y="478" text-anchor="middle">Safety Layer</text>
+  <text class="blks" x="1415" y="506" text-anchor="middle">RSS checks /</text>
+  <text class="blks" x="1415" y="528" text-anchor="middle">envelope</text>
+  <text class="blk" x="1415" y="648" text-anchor="middle">Minimal-Risk</text>
+  <text class="blk" x="1415" y="676" text-anchor="middle">Maneuver</text>
+  <text class="blks" x="1415" y="702" text-anchor="middle">controlled stop</text>
+
+  <line class="arrow" x1="700" y1="490" x2="726" y2="490" marker-end="url(#arr)"/>
+  <line class="arrow" x1="980" y1="490" x2="1006" y2="490" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1260" y1="490" x2="1286" y2="490" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1415" y1="550" x2="1415" y2="596" marker-end="url(#arr)"/>
+  <line class="arrow" x1="360" y1="540" x2="446" y2="490" marker-end="url(#arr)"/>
+
+  <!-- ============ SAFETY / SATELLITE ECU (independent) ============ -->
+  <rect x="420" y="820" width="640" height="180" rx="18" fill="url(#safe)" stroke="#c66" stroke-width="2" filter="url(#sh)"/>
+  <text class="blk" x="440" y="862" fill="#7a2230">Safety / Satellite ECU  (independent, RTOS)</text>
+  <text class="blks" x="440" y="898">• Heartbeat watchdog on Main Compute</text>
+  <text class="blks" x="440" y="926">• Independent power + redundant brake/steer path</text>
+  <text class="blks" x="440" y="954">• ASIL-decomposition: takes over → MRM on failure</text>
+  <text class="blks" x="440" y="982">• 1oo2 actuation arbitration</text>
+
+  <line class="arrow" x1="740" y1="820" x2="900" y2="730" marker-end="url(#arr)"/>
+  <text class="blks" x="745" y="790">monitors</text>
+
+  <!-- ============ VEHICLE INTERFACE + ACTUATORS (right) ============ -->
+  <rect x="1810" y="430" width="170" height="290" rx="10" fill="url(#lblue)" stroke="#3b6fb5" stroke-width="2" filter="url(#sh)"/>
+  <text class="blks" x="1895" y="555" text-anchor="middle" transform="rotate(-90 1895 575)">Vehicle Interface ECU (CAN gateway)</text>
+
+  <rect x="2030" y="430" width="170" height="84" rx="4" fill="url(#red)" stroke="#b8434f" stroke-width="2" filter="url(#sh)"/>
+  <rect x="2030" y="538" width="170" height="84" rx="4" fill="url(#red)" stroke="#b8434f" stroke-width="2" filter="url(#sh)"/>
+  <rect x="2030" y="646" width="170" height="84" rx="4" fill="url(#red)" stroke="#b8434f" stroke-width="2" filter="url(#sh)"/>
+  <text class="act" x="2115" y="480" text-anchor="middle">Brake</text>
+  <text class="act" x="2115" y="588" text-anchor="middle">Steering</text>
+  <text class="act" x="2115" y="694" text-anchor="middle">Throttle</text>
+
+  <line class="arrow" x1="1540" y1="490" x2="1806" y2="500" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1540" y1="660" x2="1806" y2="610" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1980" y1="472" x2="2026" y2="472" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1980" y1="580" x2="2026" y2="580" marker-end="url(#arr)"/>
+  <line class="arrow" x1="1980" y1="688" x2="2026" y2="688" marker-end="url(#arr)"/>
+
+  <!-- ============ REMOTE ASSISTANCE BAND (bottom, violet) ============ -->
+  <rect x="40" y="1060" width="2160" height="300" rx="20" fill="url(#ra)" stroke="#6f3fc0" stroke-width="2" filter="url(#sh)"/>
+  <text class="rat" x="70" y="1108">Remote Assistance  (technical supervisor — AFGBV §1f StVG)</text>
+
+  <rect x="80" y="1140" width="430" height="180" rx="10" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.5"/>
+  <text class="rat" x="100" y="1180" font-size="22">Connectivity ECU</text>
+  <text class="ratx" x="100" y="1212">• 5G / LTE redundant uplink</text>
+  <text class="ratx" x="100" y="1240">• Latency + link-quality monitor</text>
+  <text class="ratx" x="100" y="1268">• Link loss → safe-state / MRM</text>
+  <text class="ratx" x="100" y="1296">• Encrypted, own watchdog</text>
+
+  <rect x="560" y="1140" width="430" height="180" rx="10" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.5"/>
+  <text class="rat" x="580" y="1180" font-size="22">Teleassist Console</text>
+  <text class="ratx" x="580" y="1212">• Live camera + telemetry feed</text>
+  <text class="ratx" x="580" y="1240">• Indirect: set waypoint / approve path</text>
+  <text class="ratx" x="580" y="1268">• Resolve ambiguity / stuck cases</text>
+  <text class="ratx" x="580" y="1296">• NOT direct real-time steering</text>
+
+  <rect x="1040" y="1140" width="430" height="180" rx="10" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.5"/>
+  <text class="rat" x="1060" y="1180" font-size="22">Fleet / Ops Backend</text>
+  <text class="ratx" x="1060" y="1212">• Dispatch + ride-hailing</text>
+  <text class="ratx" x="1060" y="1240">• OTA updates, logging</text>
+  <text class="ratx" x="1060" y="1268">• Event/edge-case mining</text>
+  <text class="ratx" x="1060" y="1296">• Fleet health monitoring</text>
+
+  <rect x="1520" y="1140" width="600" height="180" rx="10" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.5"/>
+  <text class="rat" x="1540" y="1180" font-size="22">Escalation logic</text>
+  <text class="ratx" x="1540" y="1212">Vehicle requests help when: planner low-confidence,</text>
+  <text class="ratx" x="1540" y="1240">unmapped obstacle/roadworks, ODD-edge ambiguity.</text>
+  <text class="ratx" x="1540" y="1268">Supervisor advises; vehicle still owns the safety case.</text>
+  <text class="ratx" x="1540" y="1296">No link &amp; no resolution → Minimal-Risk Maneuver.</text>
+
+  <!-- violet links up to vehicle -->
+  <line class="arrowV" x1="295" y1="1140" x2="295" y2="720" marker-end="url(#arrV)"/>
+  <text class="ratx" x="305" y="900" fill="#5a2ba0" font-size="18">uplink</text>
+  <line class="arrowV" x1="1135" y1="730" x2="1135" y2="1136" marker-end="url(#arrV)"/>
+  <text class="ratx" x="1145" y="930" fill="#5a2ba0" font-size="18">request help</text>
+</svg>
+</div>
+ <h2>References — design rationale by component</h2>
+ <h3>Hybrid stack shape (learned perception/prediction/planning behind explicit, certifiable interfaces + safety layer)</h3><ul>
+<li>KIT — Learning-based architectures (modular vs end-to-end vs direct-perception/hybrid) <span class="muted">(your uploaded lecture slide)</span></li>
+<li><a href="https://www.youtube.com/watch?v=BV4EXwlb3yo" target="_blank" rel="noopener">Waymo — ML for Autonomous Driving at Scale (modular perception→prediction→planning)</a></li>
+<li><a href="https://www.youtube.com/watch?v=HPWGFzqd7pI" target="_blank" rel="noopener">Mobileye CES — &#x27;An Hour with Amnon&#x27; (vision stack + RSS as safety layer)</a></li>
+</ul>
+<h3>Main AD Compute — NVIDIA DRIVE AGX Orin, ASIL-D, ROS2</h3><ul>
+<li><a href="https://www.nvidia.com/en-us/solutions/autonomous-vehicles/in-vehicle-computing/" target="_blank" rel="noopener">NVIDIA — In-Vehicle Computing / DRIVE AGX (254 TOPS, ASIL-D, redundancy)</a></li>
+<li><a href="https://discourse.openrobotics.org/t/drive-orin-achieves-safety-certification-for-iso26262/31027" target="_blank" rel="noopener">NVIDIA DRIVE Orin SoC — ISO 26262 ASIL-D certification (TÜV SÜD)</a></li>
+<li><a href="https://github.com/autowarefoundation" target="_blank" rel="noopener">Autoware — open ROS2 autonomous-driving stack</a></li>
+<li><a href="https://github.com/ApolloAuto/apollo" target="_blank" rel="noopener">Apollo — open AV stack (Baidu)</a></li>
+</ul>
+<h3>Safety Layer — Responsibility-Sensitive Safety (RSS) envelope checks</h3><ul>
+<li><a href="https://www.mobileye.com/responsibility-sensitive-safety/" target="_blank" rel="noopener">Mobileye — Responsibility-Sensitive Safety (overview)</a></li>
+<li><a href="https://www.youtube.com/watch?v=HYMnIkqYEIM" target="_blank" rel="noopener">RSS Explained — Jack Weast, Mobileye</a></li>
+</ul>
+<h3>Main + Satellite ECU, ASIL decomposition, 1oo2 arbitration, watchdog, redundant brake/steer</h3><ul>
+<li><a href="https://www.scribd.com/document/395629001/2-07056521" target="_blank" rel="noopener">Jo et al. (2014) — Autonomous car on a distributed architecture (main + satellite compute)</a></li>
+<li><a href="https://www.iso.org/standard/68383.html" target="_blank" rel="noopener">ISO 26262 — Road-vehicle functional safety (ASIL-D, ASIL decomposition) — standard</a></li>
+</ul>
+<h3>ODD Manager / Geofencing, ODD-exit monitor, Minimal-Risk Maneuver</h3><ul>
+<li><a href="https://www.gesetze-im-internet.de/afgbv/" target="_blank" rel="noopener">AFGBV — German regulation for autonomous driving (L4, §1e/§1f StVG)</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/reg_impl/2022/1426/oj" target="_blank" rel="noopener">EU Implementing Regulation 2022/1426 — full L4 type approval</a></li>
+<li><a href="https://www.iso.org/standard/77490.html" target="_blank" rel="noopener">ISO 21448 (SOTIF) — Safety Of The Intended Functionality — standard</a></li>
+</ul>
+<h3>Sensor suite (360° cameras + LiDAR + radar + GNSS/IMU + HD map)</h3><ul>
+<li><a href="https://www.youtube.com/watch?v=o8rCOKSDMcg" target="_blank" rel="noopener">Designing the Waymo Driver — YooJung Ahn (sensor packaging &amp; placement)</a></li>
+</ul>
+<h3>Remote Assistance — technical supervisor, Connectivity ECU, link-loss → MRM</h3><ul>
+<li><a href="https://www.gesetze-im-internet.de/afgbv/" target="_blank" rel="noopener">AFGBV — &#x27;Technische Aufsicht&#x27; (technical supervisor) role for L4</a></li>
+<li><a href="https://www.iso.org/standard/70918.html" target="_blank" rel="noopener">ISO 21434 — Road-vehicle cybersecurity (secure connectivity) — standard</a></li>
+</ul>
+ <p class="note">Diagram is original work. References support each architectural choice; ISO/UNECE entries are paywalled standards listed for citation. The hybrid-shape lecture slide is a third-party teaching figure (KIT) — confirm reuse rights before public redistribution, or cite it rather than reproduce.</p>
+</div></body></html>
